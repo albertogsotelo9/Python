@@ -1,0 +1,16 @@
+{% extends 'padre.html' %}
+    {% load static %}
+{% block bloque5 %}
+    
+    <h1>Lista de Profesores</h1>
+
+    <ul>
+        {% for profesor in Profesores %}
+        <li>
+            {{profesor}}
+        </li>
+        {% endfor %}
+    </ul>
+
+
+{% endblock bloque5 %} 

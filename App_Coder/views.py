@@ -2,7 +2,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from App_Coder.forms import CursoFormulario
-from App_Coder.models import Curso
+from App_Coder.models import Curso, Profesor
 
 # Create your views here.
 
@@ -78,9 +78,18 @@ def buscar(request):
     if request.GET["camada"]:
 
         camada = request.GET["camada"]
-        cursos = Curso.objects.filter(camada_icontains=camada)
+        cursos = Curso.objects.filter(camada__icontains=camada)
 
         return render(request, "resultadoBusqueda.html", {"cursos": cursos, "camada": camada})
     else:
         respuesta = "No enviaste datos"    
-    return HttpResponse(respuesta)     
+    return HttpResponse(respuesta) 
+
+
+def listaProfesores(request):
+
+    profesores = Profesor.objects.all()
+
+    contexto = {"Profesores": profesores}
+
+    return render(request, "leerProfesores.html", contexto)
