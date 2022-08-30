@@ -1,7 +1,7 @@
 
 from django.shortcuts import render
 from django.http import HttpResponse
-from App_Coder.forms import CursoFormulario
+from App_Coder.forms import CursoFormulario, ProfesorFormulario
 from App_Coder.models import Curso, Profesor
 
 # Create your views here.
@@ -93,3 +93,22 @@ def listaProfesores(request):
     contexto = {"Profesores": profesores}
 
     return render(request, "leerProfesores.html", contexto)
+
+
+def crea_profesor(request):
+    print('method:', request.method)
+    print('post:', request.POST)
+
+    if request.method == 'POST':
+
+        miFormulario = ProfesorFormulario(request.POST)
+        if miFormulario.is_valid():
+            data = miFormulario.cleaned_data
+            profesor = Profesor(nombre=data['nombre'], apellido = data['apellido'], email=data['email'],profesion=['profesion'])
+            profesor.save()
+            return render(request, 'inicio.html')
+
+    else:
+
+        miFormulario = ProfesorFormulario()        
+    return render(request, "ProfesorFormulario.html", {'miFormulario': miFormulario})
