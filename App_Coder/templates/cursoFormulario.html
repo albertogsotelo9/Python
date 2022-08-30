@@ -1,0 +1,17 @@
+{% extends 'padre.html' %}
+    {% load static %}
+{% block bloque5 %}
+    
+    <form action="{% url 'cursoFormulario' %}" method="POST">{% csrf_token %}
+
+        <!-- <label for="curso">Curso: </label>
+        <input type="text" name ="curso">
+        <label for="camada">Camada: </label>
+        <input type="number" name ="camada"> -->
+        {{miFormulario.as_p}}
+        <input type="submit" value="enviar">
+
+    </form>
+    
+
+{% endblock bloque5 %} 

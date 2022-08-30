@@ -1,6 +1,7 @@
 
 from django.shortcuts import render
 from django.http import HttpResponse
+from App_Coder.forms import CursoFormulario
 from App_Coder.models import Curso
 
 # Create your views here.
@@ -31,8 +32,55 @@ def profesores(self):
 
 def cursos(self):
 
-    return HttpResponse("visa cursos")   
+    return render(self, "curso.html")  
 
 def entregables(self):
 
     return HttpResponse("visa entregables")   
+
+# def cursoFormulario(request):
+
+#     print('method:', request.method)
+#     print('post:', request.POST)
+
+#     if request.method == 'POST':
+#         curso = Curso(nombre=request.POST['curso'], camada = request.POST['camada'])
+#         curso.save()
+#         return render(request, 'inicio.html')
+#     return render(request, "cursoFormulario.html") 
+
+def cursoFormulario(request):
+    print('method:', request.method)
+    print('post:', request.POST)
+
+    if request.method == 'POST':
+
+        miFormulario = CursoFormulario(request.POST)
+        if miFormulario.is_valid():
+            data = miFormulario.cleaned_data
+            curso = Curso(nombre=data['curso'], camada = data['camada'])
+            curso.save()
+            return render(request, 'inicio.html')
+
+    else:
+
+        miFormulario = CursoFormulario()        
+    return render(request, "cursoFormulario.html", {'miFormulario': miFormulario}) 
+
+
+def busquedaCamada(request):
+
+    return render(request, "busquedaCamada.html") 
+
+def buscar(request):
+
+
+    if request.GET["camada"]:
+
+        camada = request.GET["camada"]
+        cursos = Curso.objects.filter(camada_icontains=camada)
+
+        return render(request, "resultadoBusqueda.html", {"cursos": cursos, "camada": camada})
+    else:
+        respuesta = "No enviaste datos"    
+    return HttpResponse(respuesta)     
